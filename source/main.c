@@ -19,7 +19,25 @@ int main() {
 
   char userString[1024];
 
-	printf("Conch> ");
+	printf("Welcome to the Coch Shell 🐚\n");
+
+  while (1) {
+    printf("Conch> ");
+    fflush(stdout);
+
+    get_input(userString, sizeof(userString));
+
+    if(strcmp(userString, "exit") == 0) {
+      break;
+    }
+
+    print("You entered command: %s\n", userString);
+  }
+
+  printf("Goodby!\n");
+  return 0;
+
+  printf("Conch> ");
   fflush(stdout);
 
   get_input(userString, sizeof(userString));
