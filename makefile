@@ -7,7 +7,7 @@ CFLAGS = -Wall -Wextra -g
 LDFLAGS =
 
 # Source and object files
-SRCDIR = source
+SRCDIR = src
 OBJDIR = obj
 INCDIR = include
 
