@@ -31,24 +31,10 @@ int main() {
       break;
     }
 
-    print("You entered command: %s\n", userString);
+    printf("You entered command: %s\n", userString);
   }
 
   printf("Goodby!\n");
-  return 0;
-
-  printf("Conch> ");
-  fflush(stdout);
-
-  get_input(userString, sizeof(userString));
-
-  /**
-  if(strcmp(userString, "exit") == 0) {
-    break;
-  }
-  **/
-
-  printf("%s", userString);
-	
+  
   return 0;
 }
