@@ -33,4 +33,7 @@ clean:
 # rebuild everything from scratch
 rebuild: clean all
 
+run: $(TARGET)
+	./$(TARGET)
+
 .PHONY: all clean rebuild

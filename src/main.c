@@ -1,68 +1,23 @@
+/*
+* main.c
+*
+* Responsible for the main control loop of the conch shell
+*
+* Author: Kyle Sherman
+* Created: 2025-05-22
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_INPUT_SIZE 1024
-#define MAX_TOKENS 64
-
-void parse_input(char *input, char **args) {
-  int i = 0;
-
-  char *token = strtok(input, " \t\n");
-
-  while(token != NULL && i < MAX_TOKENS - 1) {
-    args[i++] = token;
-    token = strtok(NULL, " \t\n");
-  }
-
-  args[i] = NULL;
-}
-
-void command_dispatcher(char **args) {
-    if (strcmp(args[0], "oceanman") == 0) {
-      conch_oceanman(args);
-    } else if (strcmp(args[0], "clear") == 0) {
-      conch_clear(args);
-    } else {
-      printf("You entered command: %s\n", args[0]);
-    }
-
-}
-
-// read a line from stdin and trim newline
-void get_input(char *buffer, size_t size) {
-  if(fgets(buffer, size, stdin) != NULL) {
-    // remove the trailing newline
-    buffer[strcspn(buffer, "\n")] = 0;
-  } else {
-    // handle ctrl-d [EOF]
-    buffer[0] = '\0';
-  }
-}
-
-int conch_oceanman(char **args) {
-  printf("\n🎶 Ocean man, take me by the hand, lead me to the land...\n");
-  printf("That you understand...\n\n");
-
-  if(args[1] != NULL) {
-    printf("You asked about '%s', but the ocean has no answers. Only mysteries.\n", args[1]);
-  } else {
-    printf("Try: oceanman ls\n");
-  }
-
-  return 1;
-}
-
-int conch_clear(char **args) {
-  printf("\033[2J\033[H"); // clear the screen and move cursor to the top left
-  fflush(stdout);
-
-  return 1;
-}
+#include "common.h"
+#include "parser.h"
+#include "dispatcher.h"
 
 int main() {
 
-  char userString[1024];
+  char userString[MAX_INPUT_SIZE];
   char *args[MAX_TOKENS];
 
   /**
