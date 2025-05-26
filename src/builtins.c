@@ -56,7 +56,7 @@ int conch_oceanman(char **args) {
   // otherwise run the actual man command
   pid_t pid = fork();
   if(pid == 0) {
-    execvp("man", &args[1]);
+    execvp("man", args);
     perror("execvp failed");
     exit(EXIT_FAILURE);
   } else if (pid > 0) {

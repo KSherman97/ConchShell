@@ -8,6 +8,7 @@
         "chrono": "c",
         "text_encoding": "c",
         "typeinfo": "c",
-        "common.h": "c"
+        "common.h": "c",
+        "utilities.h": "c"
     }
 }
