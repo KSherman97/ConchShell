@@ -20,6 +20,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <time.h>
 
 static builtin_command_t builtins[] = {
     {"clear", conch_clear},
@@ -28,6 +29,8 @@ static builtin_command_t builtins[] = {
     {"dir", conch_dir},
     {"ls", conch_dir},
     {"cd", conch_cd},
+    {"ask", conch_ask},
+    {"8ball", conch_ask},
     {NULL, NULL}
 };
 
@@ -180,4 +183,47 @@ int conch_cd(char **args) {
   }
 
   return CONCH_SUCCESS;
+}
+
+int conch_ask(char **args) {
+  srand(time(NULL));
+
+  const char *answers = {
+      "It is certain.",
+      "It is decidedly so.",
+      "Without a doubt.",
+      "Yes, definitely.",
+      "You may rely on it.",
+      "As I see it, yes.",
+      "Most likely.",
+      "Outlook good.",
+      "Yes.",
+      "Signs point to yes.",
+      "Reply hazy, try again.",
+      "Ask again later.",
+      "Better not tell you now.",
+      "Cannot predict now.",
+      "Concentrate and ask again.",
+      "Don't count on it.",
+      "My reply is no.",
+      "My sources say no.",
+      "Outlook not so good.",
+      "Very doubtful."
+  };
+
+  int num_answers = sizeof(answers) / sizeof(answers[0]);
+
+  if (args[1] == NULL) {
+      printf("Ask the Magic 8-Ball a question!\n");
+      printf("Example: ask Will I become a millionaire today?\n");
+      return 1;
+  }
+
+  // Generate a random index
+  int random_index = rand() % num_answers;
+
+  // Print the selected answer
+  printf("\nMagic 8-Ball says: %s\n\n", answers[random_index]);
+
+  return 0; // Return 0 for success
 }

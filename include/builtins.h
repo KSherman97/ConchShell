@@ -8,6 +8,8 @@ typedef struct {
     t_builtin_func func;
 } builtin_command_t;
 
+int conch_ask(char **args);
+
 int conch_oceanman(char **args);
 int conch_clear();
 int conch_dir();
