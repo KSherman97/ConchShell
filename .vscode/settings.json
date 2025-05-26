@@ -4,6 +4,10 @@
         "string.h": "c",
         "dispatcher.h": "c",
         "string": "c",
-        "format": "c"
+        "format": "c",
+        "chrono": "c",
+        "text_encoding": "c",
+        "typeinfo": "c",
+        "common.h": "c"
     }
 }

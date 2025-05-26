@@ -5,14 +5,16 @@
 #include "dispatcher.h"
 #include "builtins.h"
 
+#include "executor.h"
+
 void command_dispatcher(char **args) {
-    if (strcmp(args[0], "oceanman") == 0) {
-      conch_oceanman(args);
-    } else if (strcmp(args[0], "clear") == 0) {
-      conch_clear();
-    } else if ((strcmp(args[0], "ls") == 0) || (strcmp(args[0], "dir") == 0)) {
-      conch_dir(args);
-    } else {
-      printf("You entered command: %s\n", args[0]);
-    }
+
+
+  t_builtin_func is_builtin = get_builtin(args[0]);
+
+  if(is_builtin) {
+    is_builtin(args);
+  } else {
+    execute_external(args);
+  }
 }

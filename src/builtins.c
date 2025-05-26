@@ -17,19 +17,53 @@
 #include "common.h"
 #include "builtins.h"
 
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+static builtin_command_t builtins[] = {
+    {"clear", conch_clear},
+    {"oceanman", conch_oceanman},
+    {"man", conch_oceanman},
+    {"dir", conch_dir},
+    {"ls", conch_dir},
+    {"cd", conch_cd},
+    {NULL, NULL}
+};
+
+t_builtin_func get_builtin(const char *cmd) {
+    for (int i = 0; builtins[i].name != NULL; ++i) {
+        if (strcmp(builtins[i].name, cmd) == 0) {
+            return builtins[i].func;
+        }
+    }
+    return NULL;
+}
+
 /**
  * @brief oceanman function | conch replacement for man shell command
  * 
  * @param args An array of string arguments
  */
 int conch_oceanman(char **args) {
-  printf("\n🎶 Ocean man, take me by the hand, lead me to the land...\n");
-  printf("That you understand...\n\n");
-
-  if(args[1] != NULL) {
-    printf("You asked about '%s', but the ocean has no answers. Only mysteries.\n", args[1]);
-  } else {
+   if (args[1] == NULL) {
+    printf("\n🎶 Ocean man, take me by the hand, lead me to the land...\n");
+    printf("That you understand...\n\n");
     printf("Try: oceanman ls\n");
+    return 1;
+  }
+
+  // otherwise run the actual man command
+  pid_t pid = fork();
+  if(pid == 0) {
+    execvp("man", &args[1]);
+    perror("execvp failed");
+    exit(EXIT_FAILURE);
+  } else if (pid > 0) {
+    int status;
+    waitpid(pid, &status, 0);
+  } else {
+    perror("Error forking the process");
   }
 
   return 1;
@@ -124,4 +158,26 @@ int conch_dir(char **args) {
   free(directories);
 
   return 1;
+}
+
+int conch_cd(char **args) {
+  const char *path = (args[1] != NULL) ? args[1] : "~";
+  const char *home = getenv("HOME");
+
+
+  if(args[1] == NULL || strcmp(args[1], "~") == 0) {
+    if(home == NULL) {
+      fprintf(stderr, "cd: HOME environment variable is not set\n");
+      return 1;
+    }
+    path = home;
+  } else {
+    path = args[1];
+  }
+
+  if(chdir(path) != 0) {
+    perror("cd failed");
+  }
+
+  return CONCH_SUCCESS;
 }
